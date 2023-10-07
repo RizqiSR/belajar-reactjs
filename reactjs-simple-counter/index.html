@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Counter</title>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+
+      // 2. Buat komponen button
+      function MyButton({ text, onClick, counter }) {
+        const myStyle =
+          text !== "Reset" ? {} : { margin: 20, display: "block" };
+
+        return (
+          <button style={myStyle} onClick={onClick}>
+            {text}
+          </button>
+        );
+      }
+
+      // 3. Buat komponen counter (berisi angka)
+      function MyCounter({ counter }) {
+        // -- kenapa {{margin: 20}}: ini karena margin untuk counter belum ditentukan/di-assign ke dalam sebuah variable JS seperti 'MyStyle'.
+        // {} terluar: menyatakan bahwa ini akan memasukan sebuah props
+        // {} dalam: menyatakan value yang langsung ditulis disitu, tidak dalam bentuk variable
+        return(
+          <span style={{margin: 20}}>{counter}</span>
+        )
+      }
+
+      // 1. Buat komponen homepage
+      function Homepage() {
+        const [counter, setCounter] = React.useState(0);
+
+        function increment() {
+          setCounter(counter + 1);
+        }
+
+        function decrement() {
+          setCounter(counter - 1);
+        }
+
+        function reset() {
+          setCounter(0);
+        }
+
+        // # 1.a. Buat props text, onClick, dan counter => untuk dikirimkan/dipakai ke komponen MyButton & MyCounter
+        return (
+          <div>
+            <MyButton text="-" onClick={decrement} counter={counter} />
+            <MyCounter counter={counter} />
+            <MyButton text="+" onClick={increment} counter={counter} />
+            <MyButton text="Reset" onClick={reset} counter={counter} />
+          </div>
+        );
+      }
+
+      root.render(<Homepage />)
+    </script>
+  </body>
+</html>
